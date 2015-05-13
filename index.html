@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    	<meta charset="utf-8">
+        <title> Alien - The Game</title>
+        <!-- hämtar ett .css dokument-->
+        <link href="normalize.css" type="text/css" rel="stylesheet" />
+        
+    </head>
+    <body>
+    	<div id ="container_index">
+
+    		<h2> Alien - The Game </h2>
+            
+            <!-- Sökformulär -->
+            <form action="game.html" method="get" id="nameForm">
+                <input type="text" placeholder="name" name="yourName" id="name">
+                <button type="submit">Start game</button>
+            </form>
+
+         <button type="button" id="hamta">Hämta</button>
+        	 <button type="button" id="visa">Visa</button>
+         	 <button type="button" id="radera">Radera</button>
+ 
+        	<!-- De listor vi fyller med resultaten -->
+        
+        	<h2> Highscore </h2>
+        		<ul id="highscore-list"></ul>
+
+    	</div>
+
+    	<!-- hämtar ett min .js fil-->
+        <script language="javascript" type="text/javascript" src="init.js" ></script>
+    </body>
+</html>
