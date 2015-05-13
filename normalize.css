@@ -19,8 +19,8 @@ html {
  */
 
 body {
-    margin: 0;
-    
+    margin: auto;
+    background: url('assets/stars.jpg');
 }
 
 
@@ -426,16 +426,53 @@ td,
 th {
     padding: 0;
 }
-
-
-
-
-#myCanvas {
-    cursor: url('assets/crosshair.png'), default;
-    margin-bottom: 15px;
+h2 {
+    color: white;
+}
+ul {
+    color: white;
+}
+li {
+    color: white;
 }
 
+#container {
+    margin: 0 auto;
+    width:900px;
+    height: auto;
+    border: 2px solid #8AC007;
+    margin-bottom: 80px;
+    margin-top: 80px;
+}
+#container_index {
+    margin: 0 auto;
+    width:900px;
+    height: auto;
+    margin-bottom: 80px;
+    margin-top: 80px;
+}
+/*ändrar muspekare så att den alltid är bilden "crosshair.png"*/
+#myCanvas {
+    cursor: url('assets/crosshair.png'), default;
+}
+
+#nameForm {
+    margin-bottom: 10px;
+}
+#name {
+
+}
 
 #show_movies {
     
 }
+
+ .hamta {
+     padding: 10px;
+ }
+ .visa {
+     padding: 10px;
+ }
+ .radera{
+     padding: 10px;
+ }
