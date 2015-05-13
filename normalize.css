@@ -426,6 +426,10 @@ td,
 th {
     padding: 0;
 }
+
+
+
+
 h2 {
     color: white;
 }
@@ -441,7 +445,7 @@ li {
     width:900px;
     height: auto;
     border: 2px solid #8AC007;
-    margin-bottom: 80px;
+    margin-bottom: 25px;
     margin-top: 80px;
 }
 #container_index {
@@ -451,6 +455,13 @@ li {
     margin-bottom: 80px;
     margin-top: 80px;
 }
+
+#container_buttons {
+    margin: 0 auto;
+    width:900px;
+    height: auto;
+}
+
 /*ändrar muspekare så att den alltid är bilden "crosshair.png"*/
 #myCanvas {
     cursor: url('assets/crosshair.png'), default;
@@ -475,4 +486,16 @@ li {
  }
  .radera{
      padding: 10px;
+ }
+
+
+
+ #bktoindx {
+    float:left;
+    margin-bottom: 10px;
+ }
+  #saveHighscore {
+    float:left;
+    margin-right: 10px;
+    margin-bottom: 10px;
  }
