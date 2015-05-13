@@ -1,4 +1,4 @@
-
+    
 // Skapar variabler på ett samlat ställe
 var context;
 var queue;
@@ -191,7 +191,8 @@ function handleMouseDown(event)
     crossHair.y = event.clientY + window.scrollY - 83;
     stage.addChild(crossHair);
     createjs.Tween.get(crossHair).to({alpha: 0},1000);
-    
+
+    //console.log("CHX " + crossHair.x + " CHY " + crossHair.y);
     //Spela upp skottljud
     createjs.Sound.play("shot");
 
@@ -205,14 +206,14 @@ function handleMouseDown(event)
     var spriteX = Math.round(animation.x);
     var spriteY = Math.round(animation.y);
 
-
+    console.log("shotX:" + shotX + " shotY: " + shotY);
     // Kontrollerar avstånder mellan där du klickar och spritens position
     var distX = Math.abs(shotX - spriteX);
     var distY = Math.abs(shotY - spriteY);
 
-    console.log("sprite", spriteX, spriteY);
-    console.log("shot:", shotX, shotY);
-    console.log("dist:", distX, distY);
+    //console.log("sprite", spriteX, spriteY);
+    //console.log("shot:", shotX, shotY);
+    //console.log("dist:", distX, distY);
 
     // Träffyta på spriten, avstånd
     if(distX < 36 && distY < 25 )
@@ -236,9 +237,14 @@ function handleMouseDown(event)
 
     } else
     {
-    	//Om man missar, dra av 10 poäng från score
-    	score -= 10;
-    	scoreText.text = "Points: " + score.toString();
+        // Hindrar användare med hög skärmupplösningen från att klicka långt utanför
+        // och få minus poäng
+        if ((shotX > 0 && 900 > shotX)  && (shotY > 0 && 600 > shotY)) {
+        //Om man missar, dra av 10 poäng från score
+            score -= 10;
+            scoreText.text = "Points: " + score.toString();
+        }
+    	
 
     }
 }
@@ -276,96 +282,60 @@ function updateTime()
 
 
 
-// Local Storage
 
-var buttonHamta = document.getElementById('hamta');
-var buttonVisa = document.getElementById('visa');
-var buttonRadera = document.getElementById('radera');
 
-var highscore = document.getElementById("highscore-list");
 
-// Våra URLs
-var omdbURL = "http://www.omdbapi.com/?t=Batman&y=&plot=short&r=json";
-var omdbAPI = new XMLHttpRequest();
+
+
+
+
+// Local Storage GAME
+
+var buttonSave = document.getElementById('save');
+
+
+//översätter text till objekt
+var highscore = JSON.parse(localStorage.getItem("Highscore"));
+
+
+if (!highscore) {
+    highscore = {results: []};   
+}
+
+//lagrar namn
+var nameHighscore = "";
 
 // on click gör detta
-buttonHamta.addEventListener("click", function() {
+buttonSave.addEventListener("click", function() {
 
-    // finns det inget i localStorage, hämta något
-   if( localStorage.length == 0 ) {
+   nameHighscore = prompt("Please enter your name");
+   // om tom inget sker
+   if (!nameHighscore) {
+    return;
+   }
 
-      // Förbered för att kommunicera
-     omdbAPI.open("get", omdbURL, true);
- 
-     // Kommunicera
-     omdbAPI.send();  
-        
-     }else {
-        //Finns det något lagrat skriv ut till användaren:
-        alert("Det finns inget hämta");
-     }
-
+    //skriver ut resultat i konsolen med tillhörande namn
+    console.log("your current score is " + score + " (" + nameHighscore + ")");
     
+
+    //pushar in resultatet o namn i ett objekt
+    highscore.results.push({ name: nameHighscore, score: score });
+    console.log(JSON.stringify(highscore));
+    //skapar highscore med tillhörande resultat i textform med hjälp av stringify, sparar de i lokala datorn
+    localStorage.setItem("Highscore", JSON.stringify(highscore));
+    
+    // Fungerar endast på min (Tobias dator)
+    // Efter användaren klickat på "ok" på prompt name saken kommer man till index.html
+    location.pathname="/D:/Skola/JavaScript/projekt/Versioner/The%20Game/index.html";
 });
 
- // Den funktionalitet ni vill utföra när ni
- // fått ett svar från ert API
- omdbAPI.addEventListener("load", function() {
-
-     // Vilket innebär att ni kan exempelvis spara detta direkt
-     // sparar det du hämtade i localstorage
-     localStorage.setItem("movie", this.responseText);
-
-     // Skriv ut till användaren
-     alert("Information är nu lagrad");
- });
 
 
 
-buttonVisa.addEventListener("click", function() {
-        
 
-    // finns det inget i localStorage, hämta något
-    if( localStorage.length == 0 ) {
 
-        //Finns det något lagrat skriv ut till användaren:
-        alert("Det finns inget visa"); 
-        
-     }
-     // 
-     else {
-        //Nollställer sökresultaten
-        while (highscore.firstChild) {
-            highscore.removeChild(highscore.firstChild);
-        }
-        var movie = JSON.parse(localStorage.getItem("movie"));
-        // Svaret från API:et sparas som en JSON-string i
-        // "this.responseText"
 
-       // skapar ett <li> element
-        var listElement = document.createElement("li");
 
-        // använder varibeln "listElement" och bytar det visuella till vårt sökresultat
-        listElement.textContent = movie.Title;
-        // Ändrar html elementet "spotifyResultList" och uppdaterar den
-        highscore.appendChild(listElement);
-     }
 
-    // skriver ut till konsollen
-    // console.log(movie);
 
-});
-
-buttonRadera.addEventListener("click", function() {
-
-     if( localStorage.length == 0 ) {
-        alert("Det finns inget att radera");
-     }else {
-        while (highscore.firstChild) {
-            highscore.removeChild(highscore.firstChild);
-        }
-        localStorage.clear();
-
-     }
-});
 
