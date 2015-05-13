@@ -1,8 +1,8 @@
 
 var context;
 var queue;
-var WIDTH = 1366;
-var HEIGHT = 768;
+var WIDTH = 900;
+var HEIGHT = 600;
 var mouseXPosition;
 var mouseYPosition;
 var batImage;
@@ -10,10 +10,10 @@ var stage;
 var animation;
 var deathAnimation;
 var spriteSheet;
-var enemyXPos=500;
-var enemyYPos=500;
+var enemyXPos= Math.floor((Math.random() * 500) + 1);
+var enemyYPos= Math.floor((Math.random() * 500) + 1);
 var enemyXSpeed = 1.5;
-var enemyYSpeed = 1.75;
+var enemyYSpeed = 1.5;
 var score = 0;
 var scoreText;
 var gameTimer;
@@ -80,14 +80,14 @@ function queueLoaded(event)
     stage.addChild(backgroundImage);
 
     //Add Score
-    scoreText = new createjs.Text("Points: " + score.toString(), "36px Arial", "#FFF");
+    scoreText = new createjs.Text("Points: " + score.toString(), "28px Arial", "#FFF");
     scoreText.x = 10;
     scoreText.y = 10;
     stage.addChild(scoreText);
 
-    //Ad Timer
-    timerText = new createjs.Text("Time: " + gameTime.toString(), "36px Arial", "#FFF");
-    timerText.x = 1140;
+    //Add Timer
+    timerText = new createjs.Text("Time: " + gameTime.toString(), "28px Arial", "#FFF");
+    timerText.x = 720;
     timerText.y = 10;
     stage.addChild(timerText);
 
@@ -191,8 +191,8 @@ function handleMouseDown(event)
     
     //Display CrossHair
     crossHair = new createjs.Bitmap(queue.getResult("crossHair"));
-    crossHair.x = event.clientX-45;
-    crossHair.y = event.clientY-45;
+    crossHair.x = event.clientX;
+    crossHair.y = event.clientY;
     stage.addChild(crossHair);
     createjs.Tween.get(crossHair).to({alpha: 0},1000);
     
@@ -214,7 +214,7 @@ function handleMouseDown(event)
     var distY = Math.abs(shotY - spriteY);
 
     // Anywhere in the body or head is a hit - but not the wings
-    if(distX < 70 && distY < 50 )
+    if(distX < 115 && distY < 95 )
     {
     	//Hit
     	stage.removeChild(animation);
@@ -257,6 +257,73 @@ function updateTime()
 	else
 	{
 		timerText.text = "Time: " + gameTime
-    createjs.Sound.play("tick");
+    //createjs.Sound.play("tick");
 	}
 }
+
+
+
+
+
+
+
+// Våra HTML objekt
+ var searchForm = document.getElementById("search-form");
+ // Det som använaren skriver in
+ var queryField = document.getElementById("query");
+ var omdbResultList = document.getElementById("omdb-result-list");
+ 
+ // De objekt som hanterar kommunikationen
+ var omdbAPI = new XMLHttpRequest();
+ 
+ function fetchFromAPIs(query) {
+     // Våra URLs
+     //Förinställd sökning "Alien"
+     var omdbURL = "http://www.omdbapi.com/?s=Alien&y=&plot=short&r=json";
+     // tar vårt sökord (query) och använder det som sökord till vald API
+     //var omdbURL = "http://www.omdbapi.com/?s=" + query + "&y=&plot=short&r=json";
+     // Förbered för att kommunicera
+     omdbAPI.open("get", omdbURL, true);
+ 
+     // Kommunicera
+     omdbAPI.send();
+
+    
+ }
+
+
+ // Vad ska vi göra när vi får svar från omdb?
+ omdbAPI.addEventListener("load", function() {
+    // while looping nollställer sökresultaten
+    while (omdbResultList.firstChild) {
+            omdbResultList.removeChild(omdbResultList.firstChild);
+        }
+
+      // Konvertera svaret till ett korrekt objekt
+     var data = JSON.parse(this.responseText);
+
+    for (var i = 0; i < data.Search.length; i++) {
+
+         // skapar ett <li> element
+        var listElement = document.createElement("li");
+        // använder varibeln "listElement" och bytar det visuella till vårt sökresultat
+        listElement.textContent = data.Search[i].Title + ", " + data.Search[i].Year;
+        // Ändrar html elementet "omdbResultList" och uppdaterar den
+        omdbResultList.appendChild(listElement);
+     
+    }    
+
+     // skriver ut till konsollen
+     // console.log(data);
+ });
+ 
+ // Eventet "submit" körs när vi skickar formuläret
+ searchForm.addEventListener("submit", function(event) {
+     // För att avbryta att vårt formulär skickar oss till en ny sida
+     event.preventDefault();
+     // Hämta värdet från formuläret
+     var query = queryField.value;
+     // Skicka med sökordet till våra förfrågningar mot våra API
+     fetchFromAPIs(query);
+
+ });
